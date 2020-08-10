@@ -6,7 +6,7 @@ using UdemyProject.Core.Repositories;
 
 namespace UdemyProject.Core.UnitOfWorks
 {
-    interface IUnitOfWork
+    public interface IUnitOfWork
     {
         IProductRepository Products { get;  }
         ICategoryRespository Categories { get; }
