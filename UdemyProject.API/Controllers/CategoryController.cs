@@ -50,5 +50,13 @@ namespace UdemyProject.API.Controllers
             return Created(string.Empty, _mapper.Map<CategoryDto>(newCategory));
         }
 
+        [HttpPut]
+        public IActionResult Update(CategoryDto categoryDto)
+        {
+            var category = _categoryService.Update(_mapper.Map<Category>(categoryDto));
+            // No need to return anything, avoids data traffic
+            return NoContent();
+        }
+
     }
 }
