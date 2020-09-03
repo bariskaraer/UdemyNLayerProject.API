@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UdemyProject.API.DTOs;
 using UdemyProject.Core.Services;
 
 namespace UdemyProject.API.Controllers
@@ -13,9 +15,11 @@ namespace UdemyProject.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private readonly IMapper _mapper; 
+        public CategoryController(ICategoryService categoryService,IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +27,8 @@ namespace UdemyProject.API.Controllers
         {
             var categories = await _categoryService.GetAllAsync();
             // Entity -> DTO  == use Automapper
-            return Ok(categories);
+            // return Ok(categories); past code
+            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
 
     }
