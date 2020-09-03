@@ -58,5 +58,14 @@ namespace UdemyProject.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var category = _categoryService.GetByIdAsync(id).Result;
+            _categoryService.Remove(category);
+            return NoContent();
+
+        }
+
     }
 }
