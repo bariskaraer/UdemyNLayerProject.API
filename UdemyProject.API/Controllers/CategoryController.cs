@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UdemyProject.API.DTOs;
+using UdemyProject.Core.Models;
 using UdemyProject.Core.Services;
 
 namespace UdemyProject.API.Controllers
@@ -38,6 +39,15 @@ namespace UdemyProject.API.Controllers
             // use filter to find if this is exists
             return Ok(_mapper.Map<CategoryDto>(category));
 
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Save(CategoryDto categoryDto)
+        {
+            var newCategory = await _categoryService.AddAsync(_mapper.Map<Category>(categoryDto));
+
+            return Created(string.Empty, _mapper.Map<CategoryDto>(newCategory));
         }
 
     }
