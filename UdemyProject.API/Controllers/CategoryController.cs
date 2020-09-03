@@ -15,8 +15,8 @@ namespace UdemyProject.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        private readonly IMapper _mapper; 
-        public CategoryController(ICategoryService categoryService,IMapper mapper)
+        private readonly IMapper _mapper;
+        public CategoryController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
             _mapper = mapper;
@@ -29,6 +29,15 @@ namespace UdemyProject.API.Controllers
             // Entity -> DTO  == use Automapper
             // return Ok(categories); past code
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var category = await _categoryService.GetByIdAsync(id);
+            // use filter to find if this is exists
+            return Ok(_mapper.Map<CategoryDto>(category));
+
         }
 
     }
