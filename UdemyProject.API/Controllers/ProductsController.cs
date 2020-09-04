@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UdemyProject.API.DTOs;
+using UdemyProject.Core.Models;
 using UdemyProject.Core.Services;
 
 namespace UdemyProject.API.Controllers
@@ -39,5 +40,44 @@ namespace UdemyProject.API.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
 
         }
+
+        [HttpGet("{id}/category")]
+        public async Task<IActionResult> GetWithCategoryById(int id)
+        {
+            var product = await _productService.GetWithCategoryByIdAsync(id);
+
+            return Ok(_mapper.Map<ProductWithCategoryDto>(product));
+
+
+        }
+            
+
+        [HttpPost]
+        public async Task<IActionResult> Save(ProductDto productDto)
+        {
+            var newproduct = await _productService.AddAsync(_mapper.Map<Product>(productDto));
+            return Created(string.Empty,_mapper.Map<ProductDto>(newproduct));
+        }
+
+        [HttpPut]
+        public IActionResult Update(ProductDto productDto)
+        {
+            var product = _productService.Update(_mapper.Map<Product>(productDto));
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Remove(int id)
+        {
+            var product = _productService.GetByIdAsync(id).Result;
+            _productService.Remove(product);
+            return NoContent();
+        }
+
+
+
+
+
+
     }
 }
