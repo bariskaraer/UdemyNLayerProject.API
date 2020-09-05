@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UdemyProject.API.DTOs;
+using UdemyProject.API.Filters;
 using UdemyProject.Core.Models;
 using UdemyProject.Core.Services;
 
@@ -24,7 +25,7 @@ namespace UdemyProject.API.Controllers
             _mapper = mapper;
         }
 
-
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -32,6 +33,7 @@ namespace UdemyProject.API.Controllers
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -41,6 +43,7 @@ namespace UdemyProject.API.Controllers
 
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpGet("{id}/category")]
         public async Task<IActionResult> GetWithCategoryById(int id)
         {
@@ -51,7 +54,7 @@ namespace UdemyProject.API.Controllers
 
         }
             
-
+        [ValidationFilter]
         [HttpPost]
         public async Task<IActionResult> Save(ProductDto productDto)
         {
@@ -66,6 +69,7 @@ namespace UdemyProject.API.Controllers
             return NoContent();
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpDelete("{id}")]
         public IActionResult Remove(int id)
         {

@@ -20,6 +20,7 @@ using UdemyProject.Data.UnitOfWorks;
 using UdemyProject.Service.Services;
 using AutoMapper;
 using Newtonsoft.Json;
+using UdemyProject.API.Filters;
 
 namespace UdemyProject.API
 {
@@ -39,6 +40,7 @@ namespace UdemyProject.API
             // services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<NotFoundFilter>();
             services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
             services.AddScoped(typeof(IService<>),typeof(Service.Services.Service<>));
             services.AddScoped<ICategoryService,CategoryService>();
@@ -60,6 +62,9 @@ namespace UdemyProject.API
 
             
             services.AddControllers();
+            services.Configure<ApiBehaviorOptions>(options => {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
