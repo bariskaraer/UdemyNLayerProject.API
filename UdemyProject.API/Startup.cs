@@ -25,6 +25,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using UdemyProject.API.DTOs;
 using Microsoft.AspNetCore.Http;
 
+using UdemyProject.API.Extensions;
+
 namespace UdemyProject.API
 {
     public class Startup
@@ -78,26 +80,8 @@ namespace UdemyProject.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseExceptionHandler(config =>
-            {
-                config.Run(async context => {
-                    context.Response.StatusCode = 500;
-                    context.Response.ContentType = "application/json";
-                    var error = context.Features.Get<IExceptionHandlerFeature>();
-
-                    if(error != null)
-                    {
-                        var exc = error.Error;
-                        ErrorDto errorDto = new ErrorDto();
-                        errorDto.Status = 500;
-                        errorDto.Errors.Add(exc.Message);
-
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(errorDto));
-                    }
-
-                
-                });
-            });
+            // My custom exception Handler !!!
+            app.UseCustomException();
 
             app.UseHttpsRedirection();
 
